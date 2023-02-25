@@ -1,4 +1,4 @@
-import validation
+import input_validation
 import customtkinter
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -161,6 +161,9 @@ class App(customtkinter.CTk):
         canvas.get_tk_widget().pack()
 
     def set_execution_time(self):
+        """
+        Display execution time in the GUI
+        """
         self.execution_time_label.configure(text=App.execution_time)
 
     def start(self):
@@ -169,17 +172,17 @@ class App(customtkinter.CTk):
         """
         # if the number of dimensions or the number of points is not valid,
         # display error message until it is valid
-        if not (validation.validate_number_of_dimensions(self.number_of_dimensions_entry.get()) and
-                validation.validate_number_of_points(self.number_of_points_entry.get())):
+        if not (input_validation.validate_number_of_dimensions(self.number_of_dimensions_entry.get()) and
+                input_validation.validate_number_of_points(self.number_of_points_entry.get())):
 
             # if the number of dimensions is not valid
-            if not validation.validate_number_of_dimensions(self.number_of_dimensions_entry.get()):
+            if not input_validation.validate_number_of_dimensions(self.number_of_dimensions_entry.get()):
                 self.number_of_dimensions_validation_label.configure(text="Invalid number of dimensions.")
             else:
                 self.number_of_dimensions_validation_label.configure(text="")
 
             # if the number of points is not valid
-            if not validation.validate_number_of_points(self.number_of_points_entry.get()):
+            if not input_validation.validate_number_of_points(self.number_of_points_entry.get()):
                 self.number_of_points_validation_label.configure(text="Invalid number of points.")
             else:
                 self.number_of_points_validation_label.configure(text="")
@@ -200,7 +203,11 @@ class App(customtkinter.CTk):
         App.execution_time = f"{elapsed_time:.2f} s"
 
 
-def change_appearance_mode(new_appearance_mode):
+def change_appearance_mode(new_appearance_mode: str):
+    """
+    Changes the GUI theme
+    :param new_appearance_mode: string: "dark", "light", or "system"
+    """
     customtkinter.set_appearance_mode(new_appearance_mode)
 
 
