@@ -1,3 +1,16 @@
+import math
+import numpy as np
+
+
+def euclidean_distance(first_point: np.ndarray[float], second_point: np.ndarray[float]) -> float:
+    """
+    :param second_point:
+    :param first_point:
+    :return: the Euclidean distance between two vectors.
+    """
+    return math.sqrt(sum([(first_point[i] - second_point[i]) ** 2 for i in range(len(first_point))]))
+
+
 def validate_number_of_dimensions(d: str) -> bool:
     """
     Validates the number of dimensions
