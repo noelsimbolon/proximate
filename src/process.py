@@ -1,27 +1,28 @@
 import math
 
-# dvdBy means divide by either x axis or y axis.
-# dvdBy = 0 , represent divide by x
-# dvdBy = 1, represent divide by y
-def dnq(vectors, dimension, dvdBy=0):
-    if (len(vectors) > 3): # recurence
+
+# divide_by means divide by either x-axis or y-axis.
+# divide_by = 0 , represent divide by x
+# divide_by = 1, represent divide by y
+def dnq(vectors, dimension, divide_by=0):
+    if len(vectors) > 3:  # recurrence
 
         # sort vectors
         sorted_vectors = quickSort(vectors, dvdBy)
 
         # find index to divide
-        divideAt = len(sorted_vectors) // 2
+        divide_at = len(sorted_vectors) // 2
 
         # split vectors
-        vectors_left = sorted_vectors[:divideAt]
-        vectors_right = sorted_vectors[divideAt:]
+        vectors_left = sorted_vectors[:divide_at]
+        vectors_right = sorted_vectors[divide_at:]
 
         # recurence
         closest_left, dist_left, count_left = dnq(vectors_left, dimension, (dvdBy+1)%(dimension-1 if dimension > 1 else dimension))
         closest_right, dist_right, count_right = dnq(vectors_right, dimension, (dvdBy+1)%(dimension-1 if dimension > 1 else dimension))
 
         # find minimum
-        closest_vector, min_dist = (closest_left,dist_left) if dist_left < dist_right else (closest_right,dist_right)
+        closest_vector, min_dist = (closest_left, dist_left) if dist_left < dist_right else (closest_right, dist_right)
 
         # find if there were nearer points separated by the strip
         count_gray = 0
@@ -37,7 +38,7 @@ def dnq(vectors, dimension, dvdBy=0):
                         closest_vector, min_dist = (sorted_vectors[i], sorted_vectors[j]), temp_dist
 
         # return
-        return closest_vector, min_dist, count_left+count_right+count_gray
+        return closest_vector, min_dist, count_left + count_right + count_gray
 
     elif (len(vectors) == 3): # basis 1
         vect_temp1, dist1 = vectors[:2], distance(vectors[:2])
@@ -53,9 +54,9 @@ def dnq(vectors, dimension, dvdBy=0):
         else:
             return vect_temp3, dist3, 3
 
-    else : # basis 2
+    else:  # basis 2
         # find distance between 2 vectors
-        dist = distance(vectors) 
+        dist = euclidean_distance(vectors)
 
         # return the two vectors and distance between them
         return vectors, dist, 1
@@ -63,12 +64,15 @@ def dnq(vectors, dimension, dvdBy=0):
 # distance of two vector
 def distance(vectors):
     point1, point2 = vectors
-    sumOfSquaredDelta = 0;
+    sumOfSquaredDelta = 0
+
     for i in range(len(point1)):
-        delta =  point1[i]-point2[i]
-        squared = delta**2
+        delta = point1[i] - point2[i]
+        squared = delta ** 2
         sumOfSquaredDelta += squared
+
     distance = math.sqrt(sumOfSquaredDelta)
+
     return distance
 
 def quickSort(arr, by):
