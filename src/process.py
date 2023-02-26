@@ -7,7 +7,7 @@ def dnq(vectors, dimension, dvdBy=0):
     if (len(vectors) > 3): # recurence
 
         # sort vectors
-        sorted_vectors = sort(vectors, dvdBy)
+        sorted_vectors = quickSort(vectors, dvdBy)
 
         # find index to divide
         divideAt = len(sorted_vectors) // 2
@@ -23,59 +23,21 @@ def dnq(vectors, dimension, dvdBy=0):
         # find minimum
         closest_vector, min_dist = (closest_left,dist_left) if dist_left < dist_right else (closest_right,dist_right)
 
-        # counter if there is point one point in left and one point in right that is nearer
-        base_left = vectors_left[-1][dvdBy]
-        base_right = vectors_right[0][dvdBy]
-
-        base_avg = (base_left+base_right)/2
-
-        border_left = base_avg-min_dist
-        border_right = base_avg+min_dist
-
-        # collect all points within border
+        # find if there were nearer points separated by the strip
         count_gray = 0
-        vectors_gray = []
-
-        # collect from left side
-        i = 1;
-        while (i <= len(vectors_left) and vectors_left[-i][dvdBy] >= border_left):
-            vectors_gray.append(vectors_left[-i])
-            i+=1
-
-        # collect from right side
-        j = 0;
-        while (j < len(vectors_right) and vectors_right[j][dvdBy] <= border_right):
-            vectors_gray.append(vectors_right[j])
-            j+=1
-
-        # sort vectors_gray
-        vectors_gray_sorted = sort(vectors_gray, (dvdBy+1)%(dimension))
-
-        # flag variable to break
-        break_in_j = False
-        for i in range(len(vectors_gray_sorted)):
-            for j in range(i+1, len(vectors_gray_sorted)):
+        for i in range(len(sorted_vectors)):
+            for j in range(i+1, len(sorted_vectors)):
                 for k in range(dimension):
-                    if abs(vectors_gray_sorted[i][k] - vectors_gray_sorted[j][k]) > min_dist:
-                        break_in_j = True
-                        break
-                if break_in_j:
-                    break_in_j = False
-                    break
-                else:   
-                    temp_dist = distance((vectors_gray_sorted[i], vectors_gray_sorted[j]))
+                    if abs(sorted_vectors[i][k] - sorted_vectors[j][k]) > min_dist:
+                        continue
+                else :
+                    temp_dist = distance((sorted_vectors[i], sorted_vectors[j]))
                     count_gray += 1
                     if (temp_dist < min_dist):
-                        closest_vector, min_dist = (vectors_gray_sorted[i], vectors_gray_sorted[j]), temp_dist
-    
+                        closest_vector, min_dist = (sorted_vectors[i], sorted_vectors[j]), temp_dist
+
         # return
         return closest_vector, min_dist, count_left+count_right+count_gray
-
-        # repeat
-        # sort by x
-        # divide by x
-        # sort by y
-        # divide by y
 
     elif (len(vectors) == 3): # basis 1
         vect_temp1, dist1 = vectors[:2], distance(vectors[:2])
@@ -98,13 +60,6 @@ def dnq(vectors, dimension, dvdBy=0):
         # return the two vectors and distance between them
         return vectors, dist, 1
 
-# by = 0, sort by x axis
-# by = 1, sort by y axis
-def sort(vectors, by):
-    key_func = lambda vector: vector[by]
-    sorted_vectors = sorted(vectors, key=key_func)
-    return sorted_vectors
-
 # distance of two vector
 def distance(vectors):
     point1, point2 = vectors
@@ -115,3 +70,23 @@ def distance(vectors):
         sumOfSquaredDelta += squared
     distance = math.sqrt(sumOfSquaredDelta)
     return distance
+
+def quickSort(arr, by):
+    if len(arr) <= 1:
+        return arr
+
+    pivot = arr[len(arr)//2][by]
+
+    # create array with all elements smaller than pivot
+    left = [x for x in arr if x[by] < pivot]
+
+    # create array consists only pivot
+    middle = [x for x in arr if x[by] == pivot]
+
+    # create array with all elements greater than pivot
+    right = [x for x in arr if x[by] > pivot]
+
+    sort_left = quickSort(left, by)
+    sort_right = quickSort(right, by)
+
+    return sort_left + middle + sort_right
