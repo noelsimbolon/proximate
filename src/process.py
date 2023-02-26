@@ -17,8 +17,8 @@ def dnq(vectors, dimension, dvdBy=0):
         vectors_right = sorted_vectors[divideAt:]
 
         # recurence
-        closest_left, dist_left, count_left = dnq(vectors_left, dimension, (dvdBy+1)%(dimension-1))
-        closest_right, dist_right, count_right = dnq(vectors_right, dimension, (dvdBy+1)%(dimension-1))
+        closest_left, dist_left, count_left = dnq(vectors_left, dimension, (dvdBy+1)%(dimension-1 if dimension > 1 else dimension))
+        closest_right, dist_right, count_right = dnq(vectors_right, dimension, (dvdBy+1)%(dimension-1 if dimension > 1 else dimension))
 
         # find minimum
         closest_vector, min_dist = (closest_left,dist_left) if dist_left < dist_right else (closest_right,dist_right)
