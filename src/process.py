@@ -1,6 +1,5 @@
 import math
 
-
 # divide_by means divide by either x-axis or y-axis.
 # divide_by = 0 , represent divide by x
 # divide_by = 1, represent divide by y
@@ -8,7 +7,7 @@ def dnq(vectors, dimension, divide_by=0):
     if len(vectors) > 3:  # recurrence
 
         # sort vectors
-        sorted_vectors = quickSort(vectors, dvdBy)
+        sorted_vectors = quickSort(vectors, divide_by)
 
         # find index to divide
         divide_at = len(sorted_vectors) // 2
@@ -18,8 +17,8 @@ def dnq(vectors, dimension, divide_by=0):
         vectors_right = sorted_vectors[divide_at:]
 
         # recurence
-        closest_left, dist_left, count_left = dnq(vectors_left, dimension, (dvdBy+1)%(dimension-1 if dimension > 1 else dimension))
-        closest_right, dist_right, count_right = dnq(vectors_right, dimension, (dvdBy+1)%(dimension-1 if dimension > 1 else dimension))
+        closest_left, dist_left, count_left = dnq(vectors_left, dimension, (divide_by+1)%(dimension-1 if dimension > 1 else dimension))
+        closest_right, dist_right, count_right = dnq(vectors_right, dimension, (divide_by+1)%(dimension-1 if dimension > 1 else dimension))
 
         # find minimum
         closest_vector, min_dist = (closest_left, dist_left) if dist_left < dist_right else (closest_right, dist_right)
@@ -28,11 +27,13 @@ def dnq(vectors, dimension, divide_by=0):
         count_gray = 0
         for i in range(len(sorted_vectors)):
             for j in range(i+1, len(sorted_vectors)):
+                check_futher = True
                 for k in range(dimension):
                     if abs(sorted_vectors[i][k] - sorted_vectors[j][k]) > min_dist:
+                        check_futher = False
                         continue
-                else :
-                    temp_dist = distance((sorted_vectors[i], sorted_vectors[j]))
+                if check_futher:
+                    temp_dist = euclidean_distance((sorted_vectors[i], sorted_vectors[j]))
                     count_gray += 1
                     if (temp_dist < min_dist):
                         closest_vector, min_dist = (sorted_vectors[i], sorted_vectors[j]), temp_dist
@@ -41,9 +42,9 @@ def dnq(vectors, dimension, divide_by=0):
         return closest_vector, min_dist, count_left + count_right + count_gray
 
     elif (len(vectors) == 3): # basis 1
-        vect_temp1, dist1 = vectors[:2], distance(vectors[:2])
-        vect_temp2, dist2 = vectors[1:3], distance(vectors[1:3])
-        vect_temp3, dist3 = (vectors[0],vectors[2]), distance((vectors[0],vectors[2]))
+        vect_temp1, dist1 = vectors[:2], euclidean_distance(vectors[:2])
+        vect_temp2, dist2 = vectors[1:3], euclidean_distance(vectors[1:3])
+        vect_temp3, dist3 = (vectors[0],vectors[2]), euclidean_distance((vectors[0],vectors[2]))
 
         min_dist_temp = min(dist1, dist2, dist3)
 
@@ -62,7 +63,7 @@ def dnq(vectors, dimension, divide_by=0):
         return vectors, dist, 1
 
 # distance of two vector
-def distance(vectors):
+def euclidean_distance(vectors):
     point1, point2 = vectors
     sumOfSquaredDelta = 0
 
