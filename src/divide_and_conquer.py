@@ -52,7 +52,7 @@ def find_closest_pair_dnc(points: np.ndarray[np.ndarray[float]], dimension: int,
 
                     if abs(sorted_points[i][k] - sorted_points[j][k]) > min_dist:
                         check_further = False
-                        continue
+                        break
 
                 if check_further:
                     temp_dist = util.euclidean_distance(sorted_points[i], sorted_points[j])
