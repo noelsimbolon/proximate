@@ -8,10 +8,32 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 import brute_force as bf
 import divide_and_conquer as dnc
+import specs
 import util
 
 customtkinter.set_appearance_mode("Dark")
 customtkinter.set_default_color_theme("blue")
+
+
+class SpecsWindow(customtkinter.CTkToplevel):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Window config
+        self.title("Computer Specs")
+        self.resizable(False, False)
+
+        # Create a frame to contain label
+        self.specs_frame = customtkinter.CTkFrame(master=self)
+        self.specs_frame.pack(padx=20, pady=20)
+
+        # Create label
+        self.specs_label = customtkinter.CTkLabel(master=self.specs_frame,
+                                                  text=specs.get_computer_specs(),
+                                                  font=('Arial', -12),
+                                                  justify="left")
+        self.specs_label.pack(padx=20, pady=20)
 
 
 class App(customtkinter.CTk):
@@ -42,11 +64,13 @@ class App(customtkinter.CTk):
         output_heading_font = customtkinter.CTkFont(family="Arial Bold", size=-14)
         placeholder_font = customtkinter.CTkFont(family="Arial", size=-12)
         select_theme_font = customtkinter.CTkFont(family="Arial", size=-12)
-        randomize_input_font = customtkinter.CTkFont(family="Arial Bold", size=-12)
-        start_button_font = customtkinter.CTkFont(family="Arial Bold", size=-12)
+        button_font = customtkinter.CTkFont(family="Arial Bold", size=-12)
         status_font = customtkinter.CTkFont(family="Arial", size=-12)
         validation_label_font = customtkinter.CTkFont(family="Arial", size=-12)
         output_font = customtkinter.CTkFont(family="Arial", size=-14)
+
+        # Initialize specs window to None
+        self.specs_window = None
 
         # Main window configurations
         self.title("Closest Pair of Points")
@@ -65,12 +89,12 @@ class App(customtkinter.CTk):
 
         # ============ left_frame ============
 
-        # Configure grid layout (19 x 1)
+        # Configure grid layout (20 x 1)
         self.left_frame.grid_rowconfigure(0, minsize=10)  # empty row with minsize as spacing
         self.left_frame.grid_rowconfigure(2, minsize=20)  # space between input fields and app title
-        self.left_frame.grid_rowconfigure(12, weight=1)  # empty row as spacing
-        self.left_frame.grid_rowconfigure(15, minsize=20)  # empty row as spacing
-        self.left_frame.grid_rowconfigure(18, minsize=20)  # empty row with minsize as spacing
+        self.left_frame.grid_rowconfigure(13, weight=1)  # empty row as spacing
+        self.left_frame.grid_rowconfigure(16, minsize=20)  # empty row as spacing
+        self.left_frame.grid_rowconfigure(19, minsize=20)  # empty row with minsize as spacing
 
         # App title
         self.app_title = customtkinter.CTkLabel(master=self.left_frame,
@@ -112,47 +136,54 @@ class App(customtkinter.CTk):
                                                                             font=validation_label_font)
         self.number_of_dimensions_validation_label.grid(row=8, column=0, pady=(0, 10), padx=20)
 
+        # Specs window button
+        self.open_specs_window_button = customtkinter.CTkButton(master=self.left_frame,
+                                                                text="Computer Specs",
+                                                                font=button_font,
+                                                                command=self.open_specs_window)
+        self.open_specs_window_button.grid(row=9, column=0, pady=5, padx=20)
+
         # Randomize input button
         self.randomize_input_button = customtkinter.CTkButton(master=self.left_frame,
                                                               text="Randomize Input",
-                                                              font=randomize_input_font,
+                                                              font=button_font,
                                                               command=self.randomize_input)
-        self.randomize_input_button.grid(row=9, column=0, pady=5, padx=20)
+        self.randomize_input_button.grid(row=10, column=0, pady=5, padx=20)
 
         # Start button
         self.start_button = customtkinter.CTkButton(master=self.left_frame,
                                                     text="Start",
-                                                    font=start_button_font,
+                                                    font=button_font,
                                                     command=self.start)
-        self.start_button.grid(row=10, column=0, pady=5, padx=20)
+        self.start_button.grid(row=11, column=0, pady=5, padx=20)
 
         self.space_label = customtkinter.CTkLabel(master=self.left_frame,
                                                   text="")
-        self.space_label.grid(row=11, column=0, pady=5, padx=20)
+        self.space_label.grid(row=12, column=0, pady=5, padx=20)
 
         # Result
         self.status_heading_label = customtkinter.CTkLabel(master=self.left_frame,
                                                            text="Status:",
                                                            font=output_heading_font)
-        self.status_heading_label.grid(row=13, column=0, pady=0, padx=20)
+        self.status_heading_label.grid(row=14, column=0, pady=0, padx=20)
 
         # Prints the status of the program
         self.status_label = customtkinter.CTkLabel(master=self.left_frame,
                                                    text="",
                                                    font=status_font)
-        self.status_label.grid(row=14, column=0, pady=0, padx=20)
+        self.status_label.grid(row=15, column=0, pady=0, padx=20)
 
         # Select GUI theme
         self.theme_label = customtkinter.CTkLabel(master=self.left_frame,
                                                   text="Select theme:",
                                                   font=select_theme_font)
-        self.theme_label.grid(row=16, column=0, pady=0, padx=20, sticky="s")
+        self.theme_label.grid(row=17, column=0, pady=0, padx=20, sticky="s")
 
         self.theme_options = customtkinter.CTkOptionMenu(master=self.left_frame,
                                                          values=["Dark", "Light", "System"],
                                                          font=select_theme_font,
                                                          command=change_appearance_mode)
-        self.theme_options.grid(row=17, column=0, pady=5, padx=20, sticky="")
+        self.theme_options.grid(row=18, column=0, pady=5, padx=20, sticky="")
 
         # ============ right_frame ============
 
@@ -394,6 +425,12 @@ class App(customtkinter.CTk):
                                                             f'{App.dnc_execution_time}')
         self.brute_force_output_label.configure(text=f'{App.bf_ed_operations}\n'
                                                      f'{App.bf_execution_time}')
+
+    def open_specs_window(self):
+        if self.specs_window is None or not self.specs_window.winfo_exists():
+            self.specs_window = SpecsWindow(self)  # create window if its None or destroyed
+        else:
+            self.specs_window.focus()  # if window exists focus it
 
 
 def change_appearance_mode(new_appearance_mode: str):
