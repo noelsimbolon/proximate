@@ -3,12 +3,15 @@
 This is a Python implementation to find the closest pair of points in a three-dimensional space using divide and conquer
 algorithm.
 
-The program takes two inputs:
+The program takes two inputs: the number of points to be generated, and the number of dimensions of the points.
 
-- the number of points to be generated
-- randomly generated points
+After clicking <kbd>Start</kbd>, the program finds the closest pair of points with divide-and-conquer algorithm and
+brute-force algorithm. After both algorithms done executing, the program compares said algorithms based on the number
+of Euclidean distance operations and the execution time.
 
-[WIP]
+Data visualization is also implemented, but only if the number of dimensions is three.
+
+[![closest-pair-of-points.png](https://i.postimg.cc/Hkj9B71S/closest-pair-of-points.png)](https://postimg.cc/9D59f0MT)
 
 ## Prerequisites
 
@@ -39,7 +42,8 @@ The program takes two inputs:
     ```shell
     python src/main.py
     ```
-6. Follow further instructions provided by the program
+6. Input the number of points and the number of dimensions
+7. Click <kbd>Start</kbd>
 
 ## Author
 
