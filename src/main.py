@@ -73,7 +73,8 @@ class App(customtkinter.CTk):
         self.specs_window = None
 
         # Main window configurations
-        self.title("Closest Pair of Points")
+        self.title("Proximate")
+        self.minsize(910, 625)
 
         # ============ create two frames ============
 
@@ -98,7 +99,7 @@ class App(customtkinter.CTk):
 
         # App title
         self.app_title = customtkinter.CTkLabel(master=self.left_frame,
-                                                text="Closest Pair of Points",
+                                                text="Proximate",
                                                 font=title_font)
         self.app_title.grid(row=1, column=0, pady=10, padx=20)
 
