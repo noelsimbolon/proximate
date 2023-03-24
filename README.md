@@ -11,7 +11,7 @@ of Euclidean distance operations and the execution time.
 
 Data visualization is also implemented, but only if the number of dimensions is three.
 
-[![closest-pair-of-points.png](https://i.postimg.cc/Hkj9B71S/closest-pair-of-points.png)](https://postimg.cc/9D59f0MT)
+[![proximate.png](https://i.postimg.cc/PfWWZs3Y/proximate.png)](https://postimg.cc/F1Kk5qQH)
 
 ## Prerequisites
 
@@ -44,10 +44,3 @@ Data visualization is also implemented, but only if the number of dimensions is 
     ```
 6. Input the number of points and the number of dimensions
 7. Click <kbd>Start</kbd>
-
-## Author
-
-| Name             | GitHub                                            |
-|------------------|---------------------------------------------------|
-| Noel Simbolon    | [noelsimbolon](https://github.com/noelsimbolon)   |
-| Jeffrey Chow     | [JeffreyChow19](https://github.com/JeffreyChow19) |
