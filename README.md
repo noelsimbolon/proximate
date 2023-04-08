@@ -17,7 +17,7 @@ Data visualization is also implemented, but only if the number of dimensions is 
 
 - [Python 3.11.2](https://www.python.org/downloads/release/python-3112/)
 - Required packages as specified
-  in [`requirements.txt`](https://github.com/noelsimbolon/Tucil2_13521046_13521096/blob/main/requirements.txt)
+  in [`requirements.txt`](https://github.com/noelsimbolon/proximate/blob/main/requirements.txt)
 
 ## Directory Structure
 
